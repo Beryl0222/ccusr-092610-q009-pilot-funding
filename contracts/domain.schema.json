@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "社区服务圈试点履约拨付账领域事件",
+  "type": "object",
+  "required": [
+    "event_id",
+    "event_type",
+    "aggregate_type",
+    "aggregate_id",
+    "occurred_at",
+    "version",
+    "payload"
+  ],
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "event_type": {
+      "type": "string",
+      "enum": [
+        "ROUND_OPENED",
+        "MILESTONE_SUBMITTED",
+        "SERVICE_VERIFIED",
+        "PAYMENT_RESERVED",
+        "ELIGIBILITY_REVOKED"
+      ]
+    },
+    "aggregate_type": {
+      "type": "string",
+      "enum": [
+        "funding_round",
+        "service_contract",
+        "milestone_proof",
+        "disbursement_case"
+      ]
+    },
+    "aggregate_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "occurred_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "payload": {
+      "type": "object"
+    }
+  },
+  "payload_required_by_event": {
+    "MILESTONE_SUBMITTED": [
+      "contract_revision",
+      "proof_ref"
+    ],
+    "PAYMENT_RESERVED": [
+      "amount",
+      "milestone_ref"
+    ],
+    "ELIGIBILITY_REVOKED": [
+      "effective_at",
+      "reason"
+    ]
+  },
+  "additionalProperties": false
+}
