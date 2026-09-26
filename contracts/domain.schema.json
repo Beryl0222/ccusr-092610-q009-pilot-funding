@@ -20,17 +20,31 @@
       "type": "string",
       "enum": [
         "ROUND_OPENED",
+        "TARGET_SET",
+        "TARGET_REBASED",
+        "CONTRACT_SIGNED",
+        "OUTLET_REGISTERED",
         "MILESTONE_SUBMITTED",
         "SERVICE_VERIFIED",
+        "DUPLICATE_FLAGGED",
+        "DUPLICATE_RESOLVED",
         "PAYMENT_RESERVED",
-        "ELIGIBILITY_REVOKED"
+        "PAYMENT_RELEASED",
+        "PAYMENT_REJECTED",
+        "PAYMENT_PAID",
+        "ELIGIBILITY_REVOKED",
+        "PAID_REVIEW_CLOSED",
+        "OBSERVATION_RECORDED",
+        "FEEDBACK_RECORDED"
       ]
     },
     "aggregate_type": {
       "type": "string",
       "enum": [
         "funding_round",
+        "community_target",
         "service_contract",
+        "service_outlet",
         "milestone_proof",
         "disbursement_case"
       ]
@@ -52,17 +66,90 @@
     }
   },
   "payload_required_by_event": {
+    "ROUND_OPENED": [
+      "total_amount"
+    ],
+    "TARGET_SET": [
+      "community_id",
+      "period",
+      "metric",
+      "planned_count"
+    ],
+    "TARGET_REBASED": [
+      "community_id",
+      "period",
+      "metric",
+      "planned_count",
+      "reason"
+    ],
+    "CONTRACT_SIGNED": [
+      "round_id",
+      "project_code",
+      "operator_id",
+      "segments"
+    ],
+    "OUTLET_REGISTERED": [
+      "contract_id",
+      "community_id",
+      "service_category"
+    ],
     "MILESTONE_SUBMITTED": [
       "contract_revision",
-      "proof_ref"
+      "proof_ref",
+      "project_code",
+      "milestone_code",
+      "verification_fingerprint"
+    ],
+    "SERVICE_VERIFIED": [
+      "case_id",
+      "verification_fingerprint"
+    ],
+    "DUPLICATE_FLAGGED": [
+      "project_code",
+      "case_id",
+      "prior_fingerprint",
+      "incoming_fingerprint"
+    ],
+    "DUPLICATE_RESOLVED": [
+      "project_code",
+      "case_id",
+      "resolution"
     ],
     "PAYMENT_RESERVED": [
+      "amount",
+      "milestone_ref"
+    ],
+    "PAYMENT_RELEASED": [
+      "amount",
+      "milestone_ref",
+      "reason"
+    ],
+    "PAYMENT_REJECTED": [
+      "amount",
+      "milestone_ref",
+      "reason"
+    ],
+    "PAYMENT_PAID": [
       "amount",
       "milestone_ref"
     ],
     "ELIGIBILITY_REVOKED": [
       "effective_at",
       "reason"
+    ],
+    "PAID_REVIEW_CLOSED": [
+      "outcome",
+      "clawback_amount"
+    ],
+    "OBSERVATION_RECORDED": [
+      "observed_at",
+      "is_open",
+      "next_check_due"
+    ],
+    "FEEDBACK_RECORDED": [
+      "channel",
+      "summary",
+      "sentiment"
     ]
   },
   "additionalProperties": false

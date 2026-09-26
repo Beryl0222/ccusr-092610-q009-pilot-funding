@@ -5,5 +5,7 @@
   "aggregate_id": "pilot_funding-001",
   "occurred_at": "2026-09-25T10:00:00+08:00",
   "version": 1,
-  "payload": {}
+  "payload": {
+    "total_amount": "5000000.00"
+  }
 }
