@@ -45,6 +45,19 @@ def validate_event(payload: Any, schema: Mapping[str, Any]) -> list[ContractIssu
         value = payload.get(field)
         if isinstance(value, str) and allowed and value not in allowed:
             issues.append(ContractIssue(field, "unsupported_value", "字段值未在契约中登记"))
+    actor = payload.get("actor")
+    if "actor" in payload:
+        if not isinstance(actor, Mapping):
+            issues.append(ContractIssue("actor", "object_required", "操作者必须是 JSON 对象"))
+        else:
+            for field in ("id", "role"):
+                if field not in actor:
+                    issues.append(ContractIssue(f"actor.{field}", "required", "操作者缺少必填字段"))
+                elif not isinstance(actor[field], str) or not actor[field].strip():
+                    issues.append(ContractIssue(f"actor.{field}", "non_empty_string", "字段必须是非空字符串"))
+            role_enum = properties.get("actor", {}).get("properties", {}).get("role", {}).get("enum", [])
+            if isinstance(actor.get("role"), str) and role_enum and actor["role"] not in role_enum:
+                issues.append(ContractIssue("actor.role", "unsupported_value", "角色未在契约中登记"))
     event_type = payload.get("event_type")
     body = payload.get("payload")
     if "payload" in payload and not isinstance(body, Mapping):

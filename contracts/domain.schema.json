@@ -1,5 +1,5 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$schema": "https://json-schema.org/2020-12/schema",
   "title": "社区服务圈试点履约拨付账领域事件",
   "type": "object",
   "required": [
@@ -9,6 +9,7 @@
     "aggregate_id",
     "occurred_at",
     "version",
+    "actor",
     "payload"
   ],
   "properties": {
@@ -20,16 +21,35 @@
       "type": "string",
       "enum": [
         "ROUND_OPENED",
+        "TARGET_PUBLISHED",
+        "TARGET_REVISED",
+        "CONTRACT_REGISTERED",
+        "CONTRACT_REVISED",
+        "PROJECT_LINKED",
         "MILESTONE_SUBMITTED",
-        "SERVICE_VERIFIED",
+        "EVIDENCE_ACCEPTED",
+        "EVIDENCE_REJECTED",
+        "DUPLICATE_FLAG_RAISED",
+        "REVIEW_OPENED",
+        "REVIEW_RESOLVED",
         "PAYMENT_RESERVED",
-        "ELIGIBILITY_REVOKED"
+        "PAYMENT_APPROVED",
+        "PAYMENT_RELEASED",
+        "PAYMENT_REJECTED",
+        "SERVICE_VERIFIED",
+        "SERVICE_OBSERVED",
+        "FEEDBACK_RECORDED",
+        "ELIGIBILITY_REVOKED",
+        "UNPAID_FROZEN",
+        "PAID_AUDIT_OPENED",
+        "BUDGET_UNCOMMITTED"
       ]
     },
     "aggregate_type": {
       "type": "string",
       "enum": [
         "funding_round",
+        "community_target",
         "service_contract",
         "milestone_proof",
         "disbursement_case"
@@ -47,23 +67,55 @@
       "type": "integer",
       "minimum": 1
     },
+    "actor": {
+      "type": "object",
+      "required": ["id", "role"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "role": {
+          "type": "string",
+          "enum": [
+            "operator",
+            "finance_reviewer",
+            "community_acceptor",
+            "approver",
+            "system"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
     "payload": {
       "type": "object"
     }
   },
   "payload_required_by_event": {
-    "MILESTONE_SUBMITTED": [
-      "contract_revision",
-      "proof_ref"
-    ],
-    "PAYMENT_RESERVED": [
-      "amount",
-      "milestone_ref"
-    ],
-    "ELIGIBILITY_REVOKED": [
-      "effective_at",
-      "reason"
-    ]
+    "ROUND_OPENED": ["total_amount"],
+    "TARGET_PUBLISHED": ["community_id", "service_category", "planned_outlets"],
+    "TARGET_REVISED": ["community_id", "service_category", "planned_outlets", "supersedes_version"],
+    "CONTRACT_REGISTERED": ["contract_id", "operator_id", "service_category", "segments"],
+    "CONTRACT_REVISED": ["contract_id", "revision", "segments"],
+    "PROJECT_LINKED": ["project_no", "contract_id", "community_id", "service_category"],
+    "MILESTONE_SUBMITTED": ["contract_revision", "proof_ref", "evidence_kind", "project_no"],
+    "EVIDENCE_ACCEPTED": ["proof_ref", "evidence_kind", "project_no"],
+    "EVIDENCE_REJECTED": ["proof_ref", "reason", "project_no"],
+    "DUPLICATE_FLAG_RAISED": ["project_no", "flag_type", "detail"],
+    "REVIEW_OPENED": ["review_id", "project_no", "reason"],
+    "REVIEW_RESOLVED": ["review_id", "project_no", "outcome"],
+    "PAYMENT_RESERVED": ["amount", "milestone_ref", "segment_seq", "project_no"],
+    "PAYMENT_APPROVED": ["case_id", "amount"],
+    "PAYMENT_RELEASED": ["case_id", "amount"],
+    "PAYMENT_REJECTED": ["case_id", "reason"],
+    "SERVICE_VERIFIED": ["project_no", "open_for_service_at"],
+    "SERVICE_OBSERVED": ["project_no", "observed_at", "status"],
+    "FEEDBACK_RECORDED": ["project_no", "score", "content_excerpt"],
+    "ELIGIBILITY_REVOKED": ["project_no", "effective_at", "reason"],
+    "UNPAID_FROZEN": ["project_no", "case_ids"],
+    "PAID_AUDIT_OPENED": ["project_no", "paid_total", "case_ids"],
+    "BUDGET_UNCOMMITTED": ["case_ids", "amount"]
   },
   "additionalProperties": false
 }

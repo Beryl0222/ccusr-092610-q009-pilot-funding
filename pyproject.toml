@@ -1,5 +1,5 @@
 [project]
 name = "pilot-funding"
 version = "0.1.0"
-description = "社区服务圈试点履约拨付账领域契约"
+description = "社区服务圈试点履约拨付系统：领域契约与分段拨付服务"
 requires-python = ">=3.11"

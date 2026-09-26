@@ -2,8 +2,14 @@
   "event_id": "092601-009-sample-001",
   "event_type": "ROUND_OPENED",
   "aggregate_type": "funding_round",
-  "aggregate_id": "pilot_funding-001",
+  "aggregate_id": "round-2026-001",
   "occurred_at": "2026-09-25T10:00:00+08:00",
   "version": 1,
-  "payload": {}
+  "actor": {
+    "id": "finance-bureau-01",
+    "role": "system"
+  },
+  "payload": {
+    "total_amount": "5000000.00"
+  }
 }
